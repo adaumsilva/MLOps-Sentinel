@@ -1,0 +1,31 @@
+global:
+  scrape_interval: 15s       # Pull metrics every 15 seconds
+  evaluation_interval: 15s   # Evaluate alert rules every 15 seconds
+  scrape_timeout: 10s
+
+# Alertmanager configuration (wire up your own instance in production)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ["alertmanager:9093"]
+
+scrape_configs:
+
+  # Self-monitoring: Prometheus scrapes its own /metrics
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # MLOps-Sentinel inference API
+  - job_name: "sentinel-api"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["api:8000"]
+    # Attach semantic labels to every time-series from this job
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+      - target_label: environment
+        replacement: "local"
+      - target_label: service
+        replacement: "mlops-sentinel"

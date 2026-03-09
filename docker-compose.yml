@@ -1,0 +1,66 @@
+version: "3.9"
+
+# =============================================================================
+# MLOps-Sentinel — Local development stack
+#   Services: api | prometheus | (optional) grafana
+# =============================================================================
+
+networks:
+  sentinel-net:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # 1. Inference API
+  # ---------------------------------------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: mlops-sentinel:latest
+    container_name: sentinel-api
+    restart: unless-stopped
+    environment:
+      MODEL_PATH: models/model_latest.joblib
+      PORT: "8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount models dir so you can swap artefacts without rebuilding
+      - ./models:/app/models:ro
+    networks:
+      - sentinel-net
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ---------------------------------------------------------------------------
+  # 2. Prometheus
+  # ---------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v2.51.2
+    container_name: sentinel-prometheus
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+      - "--web.enable-lifecycle"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - sentinel-net
+    depends_on:
+      - api
