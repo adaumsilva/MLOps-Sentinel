@@ -24,10 +24,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.training.preprocess import ALL_FEATURES, build_preprocessor
 from src.training.train import build_model_pipeline, generate_synthetic_data, train
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(scope="module")
 def raw_data() -> pd.DataFrame:
@@ -45,12 +45,14 @@ def trained_model_path(tmp_path_factory):
 @pytest.fixture(scope="module")
 def loaded_model(trained_model_path):
     import joblib
+
     return joblib.load(trained_model_path)
 
 
 # ---------------------------------------------------------------------------
 # Data tests
 # ---------------------------------------------------------------------------
+
 
 class TestSyntheticData:
     def test_row_count(self, raw_data):
@@ -76,6 +78,7 @@ class TestSyntheticData:
 # Preprocessor tests
 # ---------------------------------------------------------------------------
 
+
 class TestPreprocessor:
     def test_output_shape(self, raw_data):
         preprocessor = build_preprocessor()
@@ -98,6 +101,7 @@ class TestPreprocessor:
 # ---------------------------------------------------------------------------
 # Model artefact tests
 # ---------------------------------------------------------------------------
+
 
 class TestTrainedModel:
     def test_model_loads(self, loaded_model):

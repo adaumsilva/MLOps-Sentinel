@@ -53,6 +53,7 @@ def _load_model() -> None:
 # Application lifecycle
 # ---------------------------------------------------------------------------
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     _load_model()
@@ -70,6 +71,7 @@ app = FastAPI(
 # ---------------------------------------------------------------------------
 # Middleware — record every request in Prometheus
 # ---------------------------------------------------------------------------
+
 
 @app.middleware("http")
 async def prometheus_middleware(request: Request, call_next):
@@ -90,6 +92,7 @@ async def prometheus_middleware(request: Request, call_next):
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
+
 
 @app.get("/health", response_model=HealthResponse, tags=["Operations"])
 def health() -> HealthResponse:

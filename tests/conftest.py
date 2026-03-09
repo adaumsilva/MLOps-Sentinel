@@ -2,6 +2,7 @@
 Shared pytest configuration.
 Sets asyncio_mode for the entire test session.
 """
+
 import pytest
 
 

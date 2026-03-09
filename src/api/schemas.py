@@ -30,20 +30,22 @@ class CreditRiskInput(BaseModel):
     All ranges are validated against realistic domain constraints.
     """
 
-    model_config = {"json_schema_extra": {
-        "example": {
-            "age": 35,
-            "annual_income": 72000.0,
-            "loan_amount": 15000.0,
-            "credit_score": 680,
-            "employment_years": 7,
-            "debt_to_income_ratio": 0.28,
-            "num_open_accounts": 5,
-            "num_derogatory_marks": 0,
-            "home_ownership": "MORTGAGE",
-            "loan_purpose": "DEBT_CONSOLIDATION",
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "age": 35,
+                "annual_income": 72000.0,
+                "loan_amount": 15000.0,
+                "credit_score": 680,
+                "employment_years": 7,
+                "debt_to_income_ratio": 0.28,
+                "num_open_accounts": 5,
+                "num_derogatory_marks": 0,
+                "home_ownership": "MORTGAGE",
+                "loan_purpose": "DEBT_CONSOLIDATION",
+            }
         }
-    }}
+    }
 
     age: Annotated[int, Field(ge=18, le=100, description="Applicant age in years")]
     annual_income: Annotated[
@@ -52,12 +54,8 @@ class CreditRiskInput(BaseModel):
     loan_amount: Annotated[
         float, Field(gt=0, le=1_000_000, description="Requested loan amount (USD)")
     ]
-    credit_score: Annotated[
-        int, Field(ge=300, le=850, description="FICO credit score")
-    ]
-    employment_years: Annotated[
-        int, Field(ge=0, le=60, description="Years at current employer")
-    ]
+    credit_score: Annotated[int, Field(ge=300, le=850, description="FICO credit score")]
+    employment_years: Annotated[int, Field(ge=0, le=60, description="Years at current employer")]
     debt_to_income_ratio: Annotated[
         float, Field(ge=0.0, le=1.0, description="Monthly debt payments / gross monthly income")
     ]
@@ -74,6 +72,7 @@ class CreditRiskInput(BaseModel):
     @classmethod
     def must_be_finite(cls, v: float) -> float:
         import math
+
         if not math.isfinite(v):
             raise ValueError("Value must be finite (no inf/nan)")
         return v

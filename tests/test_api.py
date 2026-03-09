@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture(scope="module")
 def trained_model(tmp_path_factory):
     """Ensure a model artefact exists before starting the API."""
@@ -84,6 +85,7 @@ VALID_PAYLOAD = {
 # Health endpoint
 # ---------------------------------------------------------------------------
 
+
 class TestHealth:
     def test_returns_200(self, client):
         resp = client.get("/health")
@@ -101,6 +103,7 @@ class TestHealth:
 # ---------------------------------------------------------------------------
 # Predict endpoint — valid input
 # ---------------------------------------------------------------------------
+
 
 class TestPredictValid:
     def test_returns_200(self, client):
@@ -124,8 +127,12 @@ class TestPredictValid:
 
     def test_high_risk_applicant(self, client):
         """Applicant with poor credit signals should lean high-risk."""
-        payload = {**VALID_PAYLOAD, "credit_score": 310, "debt_to_income_ratio": 0.95,
-                   "num_derogatory_marks": 8}
+        payload = {
+            **VALID_PAYLOAD,
+            "credit_score": 310,
+            "debt_to_income_ratio": 0.95,
+            "num_derogatory_marks": 8,
+        }
         data = client.post("/predict", json=payload).json()
         # At minimum the API should not crash; soft assertion on probability
         assert data["probability_high_risk"] >= 0.0
@@ -134,6 +141,7 @@ class TestPredictValid:
 # ---------------------------------------------------------------------------
 # Predict endpoint — invalid input (Pydantic validation)
 # ---------------------------------------------------------------------------
+
 
 class TestPredictInvalid:
     def test_missing_field_returns_422(self, client):
@@ -161,6 +169,7 @@ class TestPredictInvalid:
 # ---------------------------------------------------------------------------
 # Metrics endpoint
 # ---------------------------------------------------------------------------
+
 
 class TestMetrics:
     def test_returns_200(self, client):

@@ -107,6 +107,7 @@ def generate_synthetic_data(n_samples: int = 5_000) -> pd.DataFrame:
 # Model factory
 # ---------------------------------------------------------------------------
 
+
 def build_model_pipeline() -> Pipeline:
     preprocessor = build_preprocessor()
     classifier = GradientBoostingClassifier(
@@ -122,6 +123,7 @@ def build_model_pipeline() -> Pipeline:
 # ---------------------------------------------------------------------------
 # Training orchestration
 # ---------------------------------------------------------------------------
+
 
 def train(output_dir: str = "models", n_samples: int = 5_000) -> Path:
     output_path = Path(output_dir)
@@ -167,6 +169,7 @@ def train(output_dir: str = "models", n_samples: int = 5_000) -> Path:
         latest_path.symlink_to(model_path.name)
     except (OSError, NotImplementedError):
         import shutil
+
         shutil.copy2(model_path, latest_path)
 
     log.info("Model saved → %s", model_path)
@@ -190,6 +193,7 @@ def train(output_dir: str = "models", n_samples: int = 5_000) -> Path:
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="MLOps-Sentinel training pipeline")

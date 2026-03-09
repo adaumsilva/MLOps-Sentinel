@@ -11,7 +11,6 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-
 # ---------------------------------------------------------------------------
 # Feature definitions — single source of truth shared by training & inference
 # ---------------------------------------------------------------------------
@@ -28,8 +27,8 @@ NUMERIC_FEATURES = [
 ]
 
 CATEGORICAL_FEATURES = [
-    "home_ownership",   # RENT | OWN | MORTGAGE
-    "loan_purpose",     # DEBT_CONSOLIDATION | CREDIT_CARD | HOME_IMPROVEMENT | OTHER
+    "home_ownership",  # RENT | OWN | MORTGAGE
+    "loan_purpose",  # DEBT_CONSOLIDATION | CREDIT_CARD | HOME_IMPROVEMENT | OTHER
 ]
 
 ALL_FEATURES = NUMERIC_FEATURES + CATEGORICAL_FEATURES
