@@ -37,8 +37,6 @@ def trained_model(tmp_path_factory):
 @pytest.fixture(scope="module")
 def client(trained_model, monkeypatch_module):
     """Return a TestClient with the MODEL_PATH env var pointed at the fixture model."""
-    import os
-
     monkeypatch_module.setenv("MODEL_PATH", str(trained_model))
 
     # Re-import app AFTER setting env so lifespan picks up the new path

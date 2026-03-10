@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import logging
 import os
-import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
@@ -75,10 +74,7 @@ app = FastAPI(
 
 @app.middleware("http")
 async def prometheus_middleware(request: Request, call_next):
-    start = time.perf_counter()
     response = await call_next(request)
-    duration = time.perf_counter() - start
-
     # Only instrument application routes (skip /metrics itself to avoid noise)
     if request.url.path != "/metrics":
         REQUEST_COUNT.labels(

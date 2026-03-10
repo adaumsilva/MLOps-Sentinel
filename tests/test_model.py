@@ -14,15 +14,14 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
-import pytest
-
 # Ensure project root is importable
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.training.preprocess import ALL_FEATURES, build_preprocessor
-from src.training.train import build_model_pipeline, generate_synthetic_data, train
+import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
+import pytest  # noqa: E402
+from src.training.preprocess import ALL_FEATURES, build_preprocessor  # noqa: E402
+from src.training.train import generate_synthetic_data, train  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Fixtures

@@ -7,7 +7,7 @@ Exposes:
   - sentinel_model_predictions_total      (Counter)   — predictions by outcome label
 """
 
-from prometheus_client import Counter, Histogram, CollectorRegistry, REGISTRY
+from prometheus_client import Counter, Histogram
 
 # Re-use the default global registry so /metrics picks everything up automatically.
 
